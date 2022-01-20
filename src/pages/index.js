@@ -18,6 +18,12 @@ const Label = styled('label')`
   margin-bottom: 4px;
 `
 
+const Textarea = styled('textarea')`
+  font-family: inherit;
+  font-size: inherit;
+  width: 300px;
+`
+
 const MessageList = styled('div')`
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
@@ -32,12 +38,6 @@ const Message = styled('div')`
 const MessageItem = styled('div')`
   margin-bottom: 8px;
   overflow-wrap: break-word;
-`
-
-const Textarea = styled('textarea')`
-  font-family: inherit;
-  font-size: inherit;
-  width: 300px;
 `
 
 const BoldText = styled('h4')`
