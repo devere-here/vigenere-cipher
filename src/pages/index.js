@@ -21,19 +21,34 @@ const Label = styled('label')`
 const MessageList = styled('div')`
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
-  grid-auto-rows: 200px;
+  grid-auto-rows: 275px;
   width: 100%;
 `
 
+const Message = styled('div')`
+  padding: 0 16px;
+`
+
 const MessageItem = styled('div')`
-  text-align: center;
-`;
+  margin-bottom: 8px;
+  overflow-wrap: break-word;
+`
+
+const Textarea = styled('textarea')`
+  font-family: inherit;
+  font-size: inherit;
+  width: 300px;
+`
+
+const BoldText = styled('h4')`
+  display: inline;
+`
 
 const IndexPage = () => {
-  const [input, setInput] = useState("");
-  const [key, setKey] = useState("");
-  const [results, setResults] = useState([]);
-  const [action, setAction] = useState("encrypt");
+  const [input, setInput] = useState("")
+  const [key, setKey] = useState("")
+  const [results, setResults] = useState([])
+  const [action, setAction] = useState("encrypt")
 
   const onSubmit = () => {
     const result = {
@@ -41,20 +56,28 @@ const IndexPage = () => {
       key,
       action,
       result: cipher(input, key, action),
-    };
+    }
 
-    setResults([...results, result]);
-  };
+    setResults([...results, result])
+  }
+
+  const updateKey = (e) => {
+    console.log('e.target.value', e.target.value)
+    if (/^[a-zA-Z]+$/.test(e.target.value)) {
+      setKey(e.target.value)
+    }
+  }
 
   return (
     <Container>
       <h2>Vigenere Cipher</h2>
       <div>
         <Label>Input:</Label>
-        <input 
+        <Textarea 
           value={input}
           placeholder="Input"
-          type="text"
+          rows={4}
+          maxLength={150}
           onChange={(e) => setInput(e.target.value)}
         />
       </div>
@@ -64,7 +87,7 @@ const IndexPage = () => {
           value={key}
           placeholder="Key"
           type="text"
-          onChange={(e) => setKey(e.target.value)}
+          onChange={updateKey}
         />
       </div>
       <div>
@@ -89,12 +112,12 @@ const IndexPage = () => {
       <MessageList>
         {results.map(({ input, key, action, result }) => {
           return (
-            <MessageItem key={`${input}_${key}_${action}`}>
-              <div>Input: {input}</div>
-              <div>Key: {key}</div>
-              <div>Action: {action}</div>
-              <div>Result: {result}</div>
-            </MessageItem>
+            <Message key={`${input}_${key}_${action}`}>
+              <MessageItem><BoldText>Input: </BoldText>{input}</MessageItem>
+              <MessageItem><BoldText>Key: </BoldText>{key}</MessageItem>
+              <MessageItem><BoldText>Action: </BoldText>{action}</MessageItem>
+              <MessageItem><BoldText>Result: </BoldText>{result}</MessageItem>
+            </Message>
           )
         })}
       </MessageList>
