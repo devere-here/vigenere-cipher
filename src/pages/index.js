@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { cipher } from "../helpers"
 
 const IndexPage = () => {
   const [input, setInput] = useState("");
@@ -6,31 +7,13 @@ const IndexPage = () => {
   const [results, setResults] = useState([]);
   const [action, setAction] = useState("encrypt");
 
-  const encrypt = () => {
-    return {
-      input,
-      key,
-      action,
-      result: 'something'
-    }
-  };
-
-  const decrypt = () => {
-    return {
-      input,
-      key,
-      action,
-      result: 'something'
-    }
-  };
-
   const onSubmit = () => {
-    let result
-    if (action === "encrypt") {
-      result = encrypt();
-    } else {
-      result = decrypt();
-    }
+    const result = {
+      input,
+      key,
+      action,
+      result: cipher(input, key, action),
+    };
 
     setResults([...results, result]);
   };
@@ -49,18 +32,18 @@ const IndexPage = () => {
         type="text"
         onChange={(e) => setKey(e.target.value)}
       />
-      <div onChange={(e) => setAction(e.target.value)}>
-        <input type="radio" value="encrypt" name="action" /> Encrypt
-        <input type="radio" value="decrypt" name="action" /> Decrypt
+      <div>
+        <input type="radio" value="encrypt" name="action" checked={action === "encrypt"} onChange={() => setAction("encrypt")} /> Encrypt
+        <input type="radio" value="decrypt" name="action" checked={action === "decrypt"} onChange={() => setAction("decrypt")} /> Decrypt
       </div>
       <button onClick={onSubmit}>Submit</button>
-      {results.map(result => {
+      {results.map(({ input, key, action, result }) => {
         return (
-          <div>
-            <div>Input: {result.input}</div>
-            <div>Key: {result.key}</div>
-            <div>Action: {result.action}</div>
-            <div>Result: {result.result}</div>
+          <div key={`${input}_${key}_${action}`}>
+            <div>Input: {input}</div>
+            <div>Key: {key}</div>
+            <div>Action: {action}</div>
+            <div>Result: {result}</div>
           </div>
         )
       })}
